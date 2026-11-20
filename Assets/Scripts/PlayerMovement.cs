@@ -25,13 +25,13 @@ public class PlayerMovement : MonoBehaviour
         rb.linearVelocity = new Vector2(speed * Input.GetAxisRaw("Horizontal"), rb.linearVelocity.y);
         if (Input.GetAxisRaw("Horizontal") == 0)
         {
-            anim.SetBool("iswalking", true);
-            anim.SetBool("isidle", false);
+            anim.SetBool("iswalking", false);
+            anim.SetBool("isidle", true);
         }
         else
         {
-            anim.SetBool("iswalking", false);
-            anim.SetBool("isidle", true);
+            anim.SetBool("iswalking", true);
+            anim.SetBool("isidle", false);
             if (Input.GetAxisRaw("Horizontal") <= 0)
             {
                 t.transform.localScale = new Vector3(-1, 1, 1);
@@ -58,9 +58,17 @@ public class PlayerMovement : MonoBehaviour
             anim.SetBool("isonground", true);
         }
     }
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.name == "Heal_Item")
+        {
+            GetComponent<HealthScript>().TakeDamage(-1);
+        }
+    }
     public void SendToRespawnPos()
     {
         player.transform.position = rs.transform.position;
+        player.SetActive(false);
     }
     public bool CanAttack()
     {
